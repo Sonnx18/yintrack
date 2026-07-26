@@ -16,10 +16,25 @@ Cada equipo recibido genera un folio único (un folio corresponde a un solo equi
 
 ## Módulos principales
 
+- roles
+- usuarios
+- equipos
+- tickets
+- historial_estados
+- notificaciones
+- tecnico_ticket
+
+## Roles de usuario:
+
+- Administrador
+- Técnico
+- Cliente
 
 ## Stack
 
-- Backend: Node.js + Express + MongoDB
-- Frontend: React (vista pública de consulta + panel admin)
-- Auth: JWT (solo panel admin)
-- Notificaciones: Twilio WhatsApp Sandbox
+- Backend: Spring Boot (Java)
+- Frontend: React + Vite + Tailwind CSS
+- Base de datos: MySQL
+- Autenticación: JWT (Spring Security), con roles para Administrador, Técnico y Cliente
+- Notificaciones: correo (JavaMailSender + Postfix), SMS y WhatsApp (Twilio)
+- Pruebas de API: Bruno
