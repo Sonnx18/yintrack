@@ -1,13 +1,43 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Login from './paginas/Login'
 import Registro from './paginas/Registro'
+import Inicio from './paginas/Inicio'
+import DashboardAdmin from './paginas/DashboardAdmin'
+import DashboardTecnico from './paginas/DashboardTecnico'
+import DashboardCliente from './paginas/DashboardCliente'
+import RutaProtegida from './rutas/RutaProtegida'
+import { ROLES } from './utilidades/roles'
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Inicio />} />
+      <Route
+        path="/admin"
+        element={
+          <RutaProtegida rolesPermitidos={[ROLES.ADMIN]}>
+            <DashboardAdmin />
+          </RutaProtegida>
+        }
+      />
+      <Route
+        path="/tecnico"
+        element={
+          <RutaProtegida rolesPermitidos={[ROLES.TECNICO]}>
+            <DashboardTecnico />
+          </RutaProtegida>
+        }
+      />
+      <Route
+        path="/cliente"
+        element={
+          <RutaProtegida rolesPermitidos={[ROLES.CLIENTE]}>
+            <DashboardCliente />
+          </RutaProtegida>
+        }
+      />
     </Routes>
   )
 }

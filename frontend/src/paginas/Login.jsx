@@ -4,11 +4,13 @@ import CampoTexto from '../componentes/CampoTexto'
 import Cargando from '../componentes/Cargando'
 import Logo from '../componentes/Logo'
 import PanelBienvenida from '../componentes/PanelBienvenida'
+import { useAuth } from '../contexto/AuthContext'
 import api from '../servicios/api'
 import { validarCorreo, validarContrasena } from '../utilidades/validaciones'
 
 function Login() {
   const navigate = useNavigate()
+  const { iniciarSesion } = useAuth()
   const [correo, setCorreo] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [errores, setErrores] = useState({})
@@ -44,7 +46,7 @@ function Login() {
     setCargando(true)
     try {
       const respuesta = await api.post('/auth/login', { correo, contrasena })
-      localStorage.setItem('token', respuesta.data.token)
+      iniciarSesion(respuesta.data.token)
       navigate('/')
     } catch (error) {
       setErrorGeneral(
