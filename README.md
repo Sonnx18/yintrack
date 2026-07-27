@@ -3,6 +3,7 @@
 Sistema de tickets de servicio técnico con notificaciones automáticas por medio de correo electrónico, SMS y Whatsapp
 
 ## Integrantes
+
 - Noel López Herrera
 - Yhudiel Mendoza Sánchez
 
@@ -38,3 +39,5 @@ Cada equipo recibido genera un folio único (un folio corresponde a un solo equi
 - Autenticación: JWT (Spring Security), con roles para Administrador, Técnico y Cliente
 - Notificaciones: correo (JavaMailSender + Postfix), SMS y WhatsApp (Twilio)
 - Pruebas de API: Bruno
+
+## Diagrama Entidad-Relación
