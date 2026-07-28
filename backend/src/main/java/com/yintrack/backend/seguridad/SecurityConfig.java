@@ -3,6 +3,7 @@ package com.yintrack.backend.seguridad;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,6 +33,15 @@ public class SecurityConfig {
 
     @Value("${app.cors.allowed-origins}")
     private String origenesPermitidos;
+
+    @Bean
+    public FilterRegistrationBean<JwtAuthenticationFilter> desactivarRegistroServletDelFiltroJwt(
+        JwtAuthenticationFilter filtro
+    ) {
+        FilterRegistrationBean<JwtAuthenticationFilter> registro = new FilterRegistrationBean<>(filtro);
+        registro.setEnabled(false);
+        return registro;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

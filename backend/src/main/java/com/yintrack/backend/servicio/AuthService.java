@@ -33,6 +33,7 @@ public class AuthService {
     private final TokenInvalidadoRepositorio tokenInvalidadoRepositorio;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest peticion) {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(peticion.correo(), peticion.contrasena())
