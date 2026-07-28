@@ -55,6 +55,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/tickets/mios").authenticated()
                 .requestMatchers(HttpMethod.GET, "/tickets/*").permitAll()
                 .anyRequest().authenticated()
             )
