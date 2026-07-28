@@ -1,0 +1,22 @@
+meta {
+  name: Mis tickets (cliente)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/tickets/mios?page=0&size=5
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenCliente}}
+}
+
+tests {
+  test("responde 200 con una pagina", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().content).to.be.an("array");
+  });
+}

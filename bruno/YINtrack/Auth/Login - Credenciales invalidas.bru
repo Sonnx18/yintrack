@@ -1,0 +1,24 @@
+meta {
+  name: Login - Credenciales invalidas
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "admin@yintrack.com",
+    "contrasena": "ContraseñaIncorrecta1!"
+  }
+}
+
+tests {
+  test("responde 401", function () {
+    expect(res.getStatus()).to.equal(401);
+  });
+}

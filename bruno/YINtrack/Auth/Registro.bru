@@ -1,0 +1,25 @@
+meta {
+  name: Registro
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "cliente.prueba.bruno@yintrack.com",
+    "contrasena": "Prueba123!",
+    "telefono": "5544443333"
+  }
+}
+
+tests {
+  test("responde 201 al registrar (o 409 si ya existe de una corrida anterior)", function () {
+    expect([201, 409]).to.include(res.getStatus());
+  });
+}

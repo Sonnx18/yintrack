@@ -1,0 +1,29 @@
+meta {
+  name: Actualizar estado (tecnico)
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/tickets/1/estado
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenTecnico}}
+}
+
+body:json {
+  {
+    "estado": "EN_DIAGNOSTICO",
+    "comentario": "Prueba de actualizacion desde Bruno"
+  }
+}
+
+tests {
+  test("responde 200 con el nuevo estado", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().estado).to.equal("EN_DIAGNOSTICO");
+  });
+}

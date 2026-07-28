@@ -1,0 +1,34 @@
+meta {
+  name: Registrar equipo (tecnico)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/equipos
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenTecnico}}
+}
+
+body:json {
+  {
+    "clienteId": 6,
+    "tipo": "Laptop",
+    "marca": "Dell",
+    "modelo": "Latitude 5420",
+    "numeroSerie": "SN-BRUNO-001",
+    "descripcion": "Registrado desde Bruno",
+    "descripcionProblema": "No enciende"
+  }
+}
+
+tests {
+  test("responde 201 con el folio generado", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getBody().folio).to.be.a("string");
+  });
+}

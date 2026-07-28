@@ -1,0 +1,29 @@
+meta {
+  name: Login Cliente
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "cliente1@yintrack.com",
+    "contrasena": "Cliente123!"
+  }
+}
+
+script:post-response {
+  bru.setVar("tokenCliente", res.body.token);
+}
+
+tests {
+  test("responde 200 con un token", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().token).to.be.a("string");
+  });
+}

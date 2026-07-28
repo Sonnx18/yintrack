@@ -1,0 +1,29 @@
+meta {
+  name: Login Tecnico
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "correo": "tecnico1@yintrack.com",
+    "contrasena": "Tecnico123!"
+  }
+}
+
+script:post-response {
+  bru.setVar("tokenTecnico", res.body.token);
+}
+
+tests {
+  test("responde 200 con un token", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().token).to.be.a("string");
+  });
+}

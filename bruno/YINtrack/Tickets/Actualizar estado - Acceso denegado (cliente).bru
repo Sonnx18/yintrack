@@ -1,0 +1,28 @@
+meta {
+  name: Actualizar estado - Acceso denegado (cliente)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/tickets/1/estado
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenCliente}}
+}
+
+body:json {
+  {
+    "estado": "ENTREGADO",
+    "comentario": "Un cliente no deberia poder hacer esto"
+  }
+}
+
+tests {
+  test("responde 403 porque un CLIENTE no puede actualizar el estado", function () {
+    expect(res.getStatus()).to.equal(403);
+  });
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Consultar por folio - No encontrado
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/tickets/YIN-0000-000000
+  body: none
+  auth: none
+}
+
+tests {
+  test("responde 404", function () {
+    expect(res.getStatus()).to.equal(404);
+  });
+}

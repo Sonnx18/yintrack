@@ -1,0 +1,18 @@
+meta {
+  name: Consultar por folio
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/tickets/YIN-2026-000001
+  body: none
+  auth: none
+}
+
+tests {
+  test("responde 200 con el ticket", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().folio).to.equal("YIN-2026-000001");
+  });
+}
