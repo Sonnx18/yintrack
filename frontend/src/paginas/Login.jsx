@@ -103,6 +103,11 @@ function Login() {
               Registrarse
             </Link>
           </p>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            <Link to="/consultar-folio" className="font-semibold text-morado-600 hover:underline">
+              Consultar mi folio sin iniciar sesión
+            </Link>
+          </p>
         </form>
       </div>
     </div>

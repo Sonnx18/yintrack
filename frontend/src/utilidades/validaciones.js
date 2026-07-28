@@ -26,3 +26,8 @@ export function validarNombre(nombre) {
   if (!nombre || !nombre.trim()) return 'El nombre es obligatorio'
   return ''
 }
+
+export function validarFolio(folio) {
+  if (!folio || !folio.trim()) return 'Ingresa un folio para buscar'
+  return ''
+}

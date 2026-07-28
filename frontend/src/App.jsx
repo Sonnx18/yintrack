@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import Login from './paginas/Login'
 import Registro from './paginas/Registro'
 import Inicio from './paginas/Inicio'
+import ConsultarFolio from './paginas/ConsultarFolio'
 import DashboardAdmin from './paginas/DashboardAdmin'
 import DashboardTecnico from './paginas/DashboardTecnico'
 import DashboardCliente from './paginas/DashboardCliente'
@@ -13,6 +14,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
+      <Route path="/consultar-folio" element={<ConsultarFolio />} />
       <Route path="/" element={<Inicio />} />
       <Route
         path="/admin"
