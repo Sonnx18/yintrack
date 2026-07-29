@@ -87,6 +87,7 @@ function AdminNuevoUsuario() {
             alCambiar={(evento) => manejarCambio('telefono', evento.target.value)}
             error={errores.telefono}
             marcador="10 digitos"
+            maxLength={10}
           />
         </div>
 

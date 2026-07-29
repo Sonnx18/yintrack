@@ -185,6 +185,7 @@ function AdminUsuarios() {
               valor={editando.telefono}
               alCambiar={(evento) => manejarCambioEdicion('telefono', evento.target.value)}
               error={erroresFormulario.telefono}
+              maxLength={10}
             />
 
             <CampoTexto
