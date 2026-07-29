@@ -1,6 +1,6 @@
 # YINtrack
 
-Sistema de tickets de servicio técnico con notificaciones automáticas por medio de correo electrónico, SMS y Whatsapp
+Sistema de tickets de servicio técnico con notificaciones automáticas por medio de correo electrónico y Whatsapp
 
 ## Integrantes
 
