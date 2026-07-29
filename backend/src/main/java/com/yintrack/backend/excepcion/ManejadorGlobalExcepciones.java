@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -56,6 +57,13 @@ public class ManejadorGlobalExcepciones {
     public ResponseEntity<ErrorResponse> manejarRecursoNoEncontrado(RecursoNoEncontradoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
             ErrorResponse.de(404, ex.getMessage())
+        );
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> manejarIntegridadDatos() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+            ErrorResponse.de(409, "No se puede eliminar: el usuario tiene equipos, tickets u otros registros asociados")
         );
     }
 

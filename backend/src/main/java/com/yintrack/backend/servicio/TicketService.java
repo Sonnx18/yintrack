@@ -9,6 +9,7 @@ import com.yintrack.backend.modelo.Ticket;
 import com.yintrack.backend.modelo.Usuario;
 import com.yintrack.backend.modelo.enums.EstadoTicket;
 import com.yintrack.backend.repositorio.HistorialEstadoRepositorio;
+import com.yintrack.backend.repositorio.TecnicoTicketRepositorio;
 import com.yintrack.backend.repositorio.TicketRepositorio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class TicketService {
 
     private final TicketRepositorio ticketRepositorio;
     private final HistorialEstadoRepositorio historialEstadoRepositorio;
+    private final TecnicoTicketRepositorio tecnicoTicketRepositorio;
     private final NotificacionService notificacionService;
 
     public TicketResumenDto obtenerPorFolio(String folio) {
@@ -47,6 +49,15 @@ public class TicketService {
         }
 
         return pagina.map(this::aDto);
+    }
+
+    public Page<TicketResumenDto> obtenerTicketsAsignados(Long tecnicoId, Pageable pageable) {
+        return tecnicoTicketRepositorio.findByTecnico_Id(tecnicoId, pageable)
+            .map(tecnicoTicket -> aDto(tecnicoTicket.getTicket()));
+    }
+
+    public Page<TicketResumenDto> obtenerTodos(Pageable pageable) {
+        return ticketRepositorio.findAll(pageable).map(this::aDto);
     }
 
     @Transactional
@@ -77,12 +88,15 @@ public class TicketService {
     private TicketResumenDto aDto(Ticket ticket) {
         Equipo equipo = ticket.getEquipo();
         return new TicketResumenDto(
+            ticket.getId(),
             equipo.getFolio(),
             ticket.getEstado().name(),
             equipo.getTipo(),
             equipo.getMarca(),
             equipo.getModelo(),
-            ticket.getDescripcionProblema()
+            ticket.getDescripcionProblema(),
+            equipo.getCliente().getNombre(),
+            ticket.getCreadoEn()
         );
     }
 }

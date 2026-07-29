@@ -5,7 +5,7 @@ import ModalConfirmacion from '../componentes/ModalConfirmacion'
 import Paginacion from '../componentes/Paginacion'
 import { actualizarUsuario, eliminarUsuario, obtenerUsuarios } from '../servicios/usuarios'
 import { ROLES, ROLES_LISTA } from '../utilidades/roles'
-import { validarNombre, validarTelefono } from '../utilidades/validaciones'
+import { validarContrasena, validarNombre, validarTelefono } from '../utilidades/validaciones'
 
 const TAMANO_PAGINA = 5
 
@@ -52,7 +52,7 @@ function AdminUsuarios() {
   }
 
   function abrirEditar(usuarioFila) {
-    setEditando({ ...usuarioFila })
+    setEditando({ ...usuarioFila, contrasena: '' })
     setErroresFormulario({})
   }
 
@@ -66,17 +66,18 @@ function AdminUsuarios() {
     const nuevosErrores = {
       nombre: validarNombre(editando.nombre),
       telefono: validarTelefono(editando.telefono),
+      contrasena: editando.contrasena ? validarContrasena(editando.contrasena) : '',
     }
     setErroresFormulario(nuevosErrores)
-    if (nuevosErrores.nombre || nuevosErrores.telefono) return
+    if (nuevosErrores.nombre || nuevosErrores.telefono || nuevosErrores.contrasena) return
 
     setGuardando(true)
     try {
       await actualizarUsuario(editando.id, editando)
       setEditando(null)
       cargarUsuarios()
-    } catch {
-      setError('No se pudo guardar el usuario, intenta de nuevo')
+    } catch (error) {
+      setError(error.response?.data?.message || 'No se pudo guardar el usuario, intenta de nuevo')
     }
     setGuardando(false)
   }
@@ -86,8 +87,10 @@ function AdminUsuarios() {
       await eliminarUsuario(usuarioAEliminar.id)
       setUsuarioAEliminar(null)
       cargarUsuarios()
-    } catch {
-      setError('No se pudo eliminar el usuario, intenta de nuevo')
+    } catch (error) {
+      setError(
+        error.response?.data?.message || 'No se pudo eliminar el usuario, intenta de nuevo'
+      )
       setUsuarioAEliminar(null)
     }
   }
@@ -184,6 +187,15 @@ function AdminUsuarios() {
               error={erroresFormulario.telefono}
             />
 
+            <CampoTexto
+              etiqueta="Nueva contraseña (opcional):"
+              tipo="password"
+              valor={editando.contrasena}
+              alCambiar={(evento) => manejarCambioEdicion('contrasena', evento.target.value)}
+              error={erroresFormulario.contrasena}
+              marcador="Dejar en blanco para no cambiarla"
+            />
+
             <label className="mb-1 block text-sm font-medium text-gray-700">Rol:</label>
             <select
               value={editando.rol}
@@ -229,7 +241,7 @@ function AdminUsuarios() {
       <ModalConfirmacion
         abierto={usuarioAEliminar !== null}
         titulo="Eliminar usuario"
-        mensaje={`¿Seguro que quieres eliminar a ${usuarioAEliminar?.nombre}? Ya no podra iniciar sesion.`}
+        mensaje={`¿Seguro que quieres eliminar a ${usuarioAEliminar?.nombre}? Esta acción es permanente.`}
         textoConfirmar="Eliminar"
         alConfirmar={confirmarEliminar}
         alCancelar={() => setUsuarioAEliminar(null)}

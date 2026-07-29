@@ -40,6 +40,25 @@ public class TicketController {
         );
     }
 
+    @GetMapping("/asignados")
+    @PreAuthorize("hasRole('TECNICO')")
+    public ResponseEntity<Page<TicketResumenDto>> misAsignados(
+        @AuthenticationPrincipal UsuarioPrincipal solicitante,
+        @PageableDefault(size = 5, sort = "asignadoEn", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(
+            ticketService.obtenerTicketsAsignados(solicitante.getUsuario().getId(), pageable)
+        );
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<TicketResumenDto>> obtenerTodos(
+        @PageableDefault(size = 50, sort = "creadoEn", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(ticketService.obtenerTodos(pageable));
+    }
+
     @GetMapping("/{folio}")
     public ResponseEntity<TicketResumenDto> obtenerPorFolio(@PathVariable String folio) {
         return ResponseEntity.ok(ticketService.obtenerPorFolio(folio));

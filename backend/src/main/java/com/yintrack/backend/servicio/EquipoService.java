@@ -5,17 +5,24 @@ import com.yintrack.backend.dto.EquipoRespuestaDto;
 import com.yintrack.backend.excepcion.RecursoNoEncontradoException;
 import com.yintrack.backend.modelo.Equipo;
 import com.yintrack.backend.modelo.HistorialEstado;
+import com.yintrack.backend.modelo.TecnicoTicket;
+import com.yintrack.backend.modelo.TecnicoTicketId;
 import com.yintrack.backend.modelo.Ticket;
 import com.yintrack.backend.modelo.Usuario;
 import com.yintrack.backend.modelo.enums.EstadoTicket;
 import com.yintrack.backend.modelo.enums.NombreRol;
 import com.yintrack.backend.repositorio.EquipoRepositorio;
 import com.yintrack.backend.repositorio.HistorialEstadoRepositorio;
+import com.yintrack.backend.repositorio.TecnicoTicketRepositorio;
 import com.yintrack.backend.repositorio.TicketRepositorio;
 import com.yintrack.backend.repositorio.UsuarioRepositorio;
 import com.yintrack.backend.seguridad.UsuarioPrincipal;
 import java.time.Year;
+import java.util.Comparator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EquipoService {
 
+    private static final Logger log = LoggerFactory.getLogger(EquipoService.class);
+
     private final EquipoRepositorio equipoRepositorio;
     private final TicketRepositorio ticketRepositorio;
     private final HistorialEstadoRepositorio historialEstadoRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final TecnicoTicketRepositorio tecnicoTicketRepositorio;
 
     @Transactional
     public EquipoRespuestaDto registrar(EquipoRegistroRequest peticion, UsuarioPrincipal solicitante) {
@@ -73,6 +83,8 @@ public class EquipoService {
             .build();
         historialEstadoRepositorio.save(historial);
 
+        asignarTecnicoConMenosCarga(ticket);
+
         return new EquipoRespuestaDto(
             equipo.getFolio(),
             equipo.getTipo(),
@@ -87,5 +99,29 @@ public class EquipoService {
     private String generarFolio() {
         long siguiente = equipoRepositorio.count() + 1;
         return String.format("YIN-%d-%06d", Year.now().getValue(), siguiente);
+    }
+
+    private void asignarTecnicoConMenosCarga(Ticket ticket) {
+        List<Usuario> tecnicosActivos = usuarioRepositorio.findByRol_NombreAndActivoTrue(NombreRol.TECNICO);
+        if (tecnicosActivos.isEmpty()) {
+            log.warn("No hay tecnicos activos, el ticket {} quedo sin asignar", ticket.getId());
+            return;
+        }
+
+        Usuario tecnicoConMenosCarga = tecnicosActivos.stream()
+            .min(Comparator
+                .comparingLong((Usuario tecnico) ->
+                    tecnicoTicketRepositorio.countByTecnico_IdAndTicket_EstadoNot(tecnico.getId(), EstadoTicket.ENTREGADO)
+                )
+                .thenComparing(Usuario::getId)
+            )
+            .orElseThrow();
+
+        TecnicoTicket asignacion = TecnicoTicket.builder()
+            .id(new TecnicoTicketId(tecnicoConMenosCarga.getId(), ticket.getId()))
+            .tecnico(tecnicoConMenosCarga)
+            .ticket(ticket)
+            .build();
+        tecnicoTicketRepositorio.save(asignacion);
     }
 }

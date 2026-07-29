@@ -1,0 +1,22 @@
+meta {
+  name: Todos los tickets (admin)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/tickets?page=0&size=10
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenAdmin}}
+}
+
+tests {
+  test("responde 200 con una pagina", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().content).to.be.an("array");
+  });
+}
