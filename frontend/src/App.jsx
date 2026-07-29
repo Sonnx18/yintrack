@@ -4,6 +4,9 @@ import Registro from './paginas/Registro'
 import Inicio from './paginas/Inicio'
 import ConsultarFolio from './paginas/ConsultarFolio'
 import DashboardAdmin from './paginas/DashboardAdmin'
+import AdminInicio from './paginas/AdminInicio'
+import AdminNuevoUsuario from './paginas/AdminNuevoUsuario'
+import AdminUsuarios from './paginas/AdminUsuarios'
 import DashboardTecnico from './paginas/DashboardTecnico'
 import DashboardCliente from './paginas/DashboardCliente'
 import RutaProtegida from './rutas/RutaProtegida'
@@ -23,7 +26,11 @@ function App() {
             <DashboardAdmin />
           </RutaProtegida>
         }
-      />
+      >
+        <Route index element={<AdminInicio />} />
+        <Route path="nuevo-cliente" element={<AdminNuevoUsuario />} />
+        <Route path="clientes" element={<AdminUsuarios />} />
+      </Route>
       <Route
         path="/tecnico"
         element={

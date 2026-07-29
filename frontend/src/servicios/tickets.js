@@ -19,3 +19,8 @@ export async function actualizarEstadoTicket(id, estado, comentario) {
   const respuesta = await api.patch(`/tickets/${id}/estado`, { estado, comentario })
   return respuesta.data
 }
+
+export async function obtenerTodosLosTickets({ pagina = 0, tamano = 50 } = {}) {
+  const respuesta = await api.get('/tickets', { params: { page: pagina, size: tamano } })
+  return respuesta.data
+}

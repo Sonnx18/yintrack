@@ -1,25 +1,21 @@
-import { useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import BarraLateralAdmin from '../componentes/BarraLateralAdmin'
 import Navbar from '../componentes/Navbar'
 import { useAuth } from '../contexto/AuthContext'
 
 function DashboardAdmin() {
-  const navigate = useNavigate()
-  const { usuario, cerrarSesion } = useAuth()
-
-  function manejarCerrarSesion() {
-    cerrarSesion()
-    navigate('/login')
-  }
+  const { usuario } = useAuth()
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar
-        titulo="Dashboard"
-        subtitulo="Panel de administrador"
-        usuario={usuario}
-        alCerrarSesion={manejarCerrarSesion}
-      />
-      <div className="p-6 text-gray-600">Panel de administrador en construcción</div>
+    <div className="flex min-h-screen bg-gray-50">
+      <BarraLateralAdmin />
+
+      <div className="flex-1">
+        <Navbar titulo="DASHBOARD" subtitulo="Resumen de operaciones - Julio 2026" usuario={usuario} />
+        <div className="p-6">
+          <Outlet />
+        </div>
+      </div>
     </div>
   )
 }

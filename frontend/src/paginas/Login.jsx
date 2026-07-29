@@ -6,14 +6,8 @@ import Logo from '../componentes/Logo'
 import PanelBienvenida from '../componentes/PanelBienvenida'
 import { useAuth } from '../contexto/AuthContext'
 import api from '../servicios/api'
-import { ROLES } from '../utilidades/roles'
+import { ROLES, ROLES_LISTA } from '../utilidades/roles'
 import { validarCorreo, validarContrasena } from '../utilidades/validaciones'
-
-const TABS_ROL = [
-  { rol: ROLES.CLIENTE, etiqueta: 'Cliente' },
-  { rol: ROLES.TECNICO, etiqueta: 'Técnico' },
-  { rol: ROLES.ADMIN, etiqueta: 'Administrador' },
-]
 
 function Login() {
   const navigate = useNavigate()
@@ -82,13 +76,13 @@ function Login() {
           <Logo />
 
           <div className="mb-6 flex rounded-full bg-gray-100 p-1">
-            {TABS_ROL.map((tab) => (
+            {ROLES_LISTA.map((tab) => (
               <button
-                key={tab.rol}
+                key={tab.clave}
                 type="button"
-                onClick={() => setRolSeleccionado(tab.rol)}
+                onClick={() => setRolSeleccionado(tab.clave)}
                 className={`flex-1 rounded-full py-2 text-sm font-semibold ${
-                  rolSeleccionado === tab.rol ? 'bg-morado-500 text-white' : 'text-gray-500'
+                  rolSeleccionado === tab.clave ? 'bg-morado-500 text-white' : 'text-gray-500'
                 }`}
               >
                 {tab.etiqueta}
