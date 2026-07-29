@@ -91,6 +91,7 @@ function Registro() {
             alCambiar={manejarCambioTelefono}
             error={errores.telefono}
             marcador="Número de teléfono"
+            maxLength={10}
           />
 
           {errorGeneral && <p className="mb-4 text-sm text-red-500">{errorGeneral}</p>}
