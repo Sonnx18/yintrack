@@ -1,0 +1,21 @@
+meta {
+  name: Logout
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/auth/logout
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenAdmin}}
+}
+
+tests {
+  test("responde 204 sin contenido", function () {
+    expect(res.getStatus()).to.equal(204);
+  });
+}

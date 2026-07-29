@@ -1,0 +1,36 @@
+meta {
+  name: Crear usuario (admin)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/usuarios
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "nombre": "Tecnico Prueba Bruno",
+    "correo": "tecnico.prueba.bruno@yintrack.com",
+    "contrasena": "Prueba123!",
+    "telefono": "5544445555",
+    "rol": "TECNICO"
+  }
+}
+
+script:post-response {
+  bru.setVar("usuarioCreadoId", res.body.id);
+}
+
+tests {
+  test("responde 201 con el usuario creado", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getBody().id).to.be.a("number");
+  });
+}

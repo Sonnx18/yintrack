@@ -1,0 +1,21 @@
+meta {
+  name: Eliminar usuario (admin)
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/usuarios/{{usuarioCreadoId}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenAdmin}}
+}
+
+tests {
+  test("responde 204 sin contenido", function () {
+    expect(res.getStatus()).to.equal(204);
+  });
+}

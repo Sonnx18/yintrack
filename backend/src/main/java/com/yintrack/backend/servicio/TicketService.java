@@ -81,6 +81,7 @@ public class TicketService {
         String mensaje = "Tu equipo con folio " + equipo.getFolio() + " ahora esta en estado "
             + peticion.estado().name() + ".";
         notificacionService.enviarWhatsapp(cliente, ticket, mensaje);
+        notificacionService.enviarEmail(cliente, ticket, "Actualizacion de tu equipo " + equipo.getFolio(), mensaje);
 
         return aDto(ticket);
     }

@@ -1,0 +1,32 @@
+meta {
+  name: Actualizar usuario (admin)
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/usuarios/{{usuarioCreadoId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{tokenAdmin}}
+}
+
+body:json {
+  {
+    "nombre": "Tecnico Prueba Bruno Editado",
+    "telefono": "5599990000",
+    "rol": "TECNICO",
+    "activo": true,
+    "contrasena": ""
+  }
+}
+
+tests {
+  test("responde 200 con el nombre actualizado", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().nombre).to.equal("Tecnico Prueba Bruno Editado");
+  });
+}
