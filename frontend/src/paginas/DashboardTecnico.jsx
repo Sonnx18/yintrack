@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Cargando from '../componentes/Cargando'
 import Navbar from '../componentes/Navbar'
 import Paginacion from '../componentes/Paginacion'
@@ -89,15 +89,23 @@ function DashboardTecnico() {
       />
 
       <div className="p-6">
-        <div className="mb-6 flex gap-4">
-          <div className="rounded-xl bg-white px-6 py-4 shadow-sm">
-            <p className="text-2xl font-bold text-morado-700">{totalAsignados}</p>
-            <p className="text-sm text-gray-500">Asignados</p>
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex gap-4">
+            <div className="rounded-xl bg-white px-6 py-4 shadow-sm">
+              <p className="text-2xl font-bold text-morado-700">{totalAsignados}</p>
+              <p className="text-sm text-gray-500">Asignados</p>
+            </div>
+            <div className="rounded-xl bg-white px-6 py-4 shadow-sm">
+              <p className="text-2xl font-bold text-orange-600">{enProceso}</p>
+              <p className="text-sm text-gray-500">En proceso (esta página)</p>
+            </div>
           </div>
-          <div className="rounded-xl bg-white px-6 py-4 shadow-sm">
-            <p className="text-2xl font-bold text-orange-600">{enProceso}</p>
-            <p className="text-sm text-gray-500">En proceso (esta página)</p>
-          </div>
+          <Link
+            to="/tecnico/nuevo-ticket"
+            className="rounded-lg bg-morado-500 px-4 py-2 text-sm font-semibold text-white hover:bg-morado-600"
+          >
+            + Nuevo Ticket
+          </Link>
         </div>
 
         {cargando && <Cargando texto="Cargando equipos asignados..." />}

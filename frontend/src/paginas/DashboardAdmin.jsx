@@ -7,10 +7,10 @@ function DashboardAdmin() {
   const { usuario } = useAuth()
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50">
       <BarraLateralAdmin />
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-auto">
         <Navbar titulo="DASHBOARD" subtitulo="Resumen de operaciones - Julio 2026" usuario={usuario} />
         <div className="p-6">
           <Outlet />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import checkedIcono from '../assets/checked.png'
 import clockIcono from '../assets/clock.png'
 import docIcono from '../assets/doc.png'
@@ -67,6 +68,16 @@ function AdminInicio() {
 
   return (
     <div>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-lg font-bold text-gray-800">Tickets</h2>
+        <Link
+          to="/admin/nuevo-ticket"
+          className="rounded-lg bg-morado-500 px-4 py-2 text-sm font-semibold text-white hover:bg-morado-600"
+        >
+          + Nuevo Ticket
+        </Link>
+      </div>
+
       <div className="mb-6 flex flex-wrap gap-4">
         <div className="flex items-center gap-3 rounded-xl bg-white px-6 py-4 shadow-sm">
           <img src={docIcono} alt="" className="h-8 w-8 rounded-full bg-blue-100 p-1.5" />
@@ -93,7 +104,12 @@ function AdminInicio() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-xl bg-white p-4 shadow-sm lg:col-span-2">
-          <h3 className="mb-3 font-bold text-gray-800">Tickets recientes</h3>
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="font-bold text-gray-800">Tickets recientes</h3>
+            <Link to="/admin/tickets" className="text-sm font-semibold text-morado-600 hover:underline">
+              Ver todos →
+            </Link>
+          </div>
           {ticketsRecientes.length === 0 && <p className="text-sm text-gray-500">Sin tickets todavia</p>}
           {ticketsRecientes.map((ticket) => (
             <div key={ticket.id} className="flex items-center gap-3 border-b border-gray-50 py-3 last:border-0">
