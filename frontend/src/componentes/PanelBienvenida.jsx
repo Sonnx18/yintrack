@@ -11,7 +11,7 @@ function PanelBienvenida() {
       <div className="relative z-10">
         <h2 className="mb-4 text-3xl font-bold">Bienvenidos a YIN</h2>
         <p className="max-w-sm text-sm text-morado-100">
-          En este sistema podrás darle seguimiento a reparaciones o trabajos que se estén realizando
+          
         </p>
       </div>
     </div>
