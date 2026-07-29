@@ -27,12 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ADMIN')")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','TECNICO')")
     public ResponseEntity<Page<UsuarioResumenDto>> listar(
         @RequestParam(required = false) String nombre,
         @RequestParam(required = false) NombreRol rol,
@@ -42,11 +42,13 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuarioResumenDto> crear(@Valid @RequestBody UsuarioRegistroRequest peticion) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crear(peticion));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuarioResumenDto> actualizar(
         @PathVariable Long id,
         @Valid @RequestBody UsuarioActualizarRequest peticion
@@ -55,6 +57,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         usuarioService.eliminar(id);
         return ResponseEntity.noContent().build();
