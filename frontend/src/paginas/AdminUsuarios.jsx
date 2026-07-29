@@ -4,7 +4,7 @@ import CampoTexto from '../componentes/CampoTexto'
 import ModalConfirmacion from '../componentes/ModalConfirmacion'
 import Paginacion from '../componentes/Paginacion'
 import { actualizarUsuario, eliminarUsuario, obtenerUsuarios } from '../servicios/usuarios'
-import { ROLES_LISTA } from '../utilidades/roles'
+import { ROLES, ROLES_LISTA } from '../utilidades/roles'
 import { validarNombre, validarTelefono } from '../utilidades/validaciones'
 
 const TAMANO_PAGINA = 5
@@ -18,7 +18,6 @@ function AdminUsuarios() {
 
   const [nombreBusqueda, setNombreBusqueda] = useState('')
   const [filtroNombre, setFiltroNombre] = useState('')
-  const [filtroRol, setFiltroRol] = useState('')
 
   const [editando, setEditando] = useState(null)
   const [erroresFormulario, setErroresFormulario] = useState({})
@@ -28,13 +27,13 @@ function AdminUsuarios() {
 
   useEffect(() => {
     cargarUsuarios()
-  }, [pagina, filtroNombre, filtroRol])
+  }, [pagina, filtroNombre])
 
   function cargarUsuarios() {
     setCargando(true)
     setError('')
 
-    obtenerUsuarios({ pagina, tamano: TAMANO_PAGINA, nombre: filtroNombre, rol: filtroRol })
+    obtenerUsuarios({ pagina, tamano: TAMANO_PAGINA, nombre: filtroNombre, rol: ROLES.CLIENTE })
       .then((datos) => {
         setUsuarios(datos.content)
         setTotalPaginas(datos.totalPages)
@@ -105,21 +104,6 @@ function AdminUsuarios() {
           placeholder="Buscar por nombre..."
           className="rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm"
         />
-        <select
-          value={filtroRol}
-          onChange={(evento) => {
-            setPagina(0)
-            setFiltroRol(evento.target.value)
-          }}
-          className="rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm"
-        >
-          <option value="">Todos los roles</option>
-          {ROLES_LISTA.map((rol) => (
-            <option key={rol.clave} value={rol.clave}>
-              {rol.etiqueta}
-            </option>
-          ))}
-        </select>
         <button
           type="button"
           onClick={manejarBuscar}

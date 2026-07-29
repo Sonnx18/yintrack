@@ -33,7 +33,7 @@ function BarraLateralAdmin() {
           </NavLink>
           <NavLink to="/admin/nuevo-cliente" className={claseBoton}>
             <img src={masIcono} alt="" className="h-4 w-4 invert" />
-            Nuevo Cliente
+            Nuevo Usuario
           </NavLink>
           <NavLink to="/admin/clientes" className={claseBoton}>
             <img src={usersIcono} alt="" className="h-4 w-4 invert" />
