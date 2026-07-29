@@ -23,7 +23,9 @@ export function AuthProvider({ children }) {
   function iniciarSesion(nuevoToken) {
     localStorage.setItem('token', nuevoToken)
     setToken(nuevoToken)
-    setUsuario(construirUsuario(nuevoToken))
+    const nuevoUsuario = construirUsuario(nuevoToken)
+    setUsuario(nuevoUsuario)
+    return nuevoUsuario
   }
 
   function cerrarSesion() {

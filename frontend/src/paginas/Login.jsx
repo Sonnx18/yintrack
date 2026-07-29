@@ -6,11 +6,19 @@ import Logo from '../componentes/Logo'
 import PanelBienvenida from '../componentes/PanelBienvenida'
 import { useAuth } from '../contexto/AuthContext'
 import api from '../servicios/api'
+import { ROLES } from '../utilidades/roles'
 import { validarCorreo, validarContrasena } from '../utilidades/validaciones'
+
+const TABS_ROL = [
+  { rol: ROLES.CLIENTE, etiqueta: 'Cliente' },
+  { rol: ROLES.TECNICO, etiqueta: 'Técnico' },
+  { rol: ROLES.ADMIN, etiqueta: 'Administrador' },
+]
 
 function Login() {
   const navigate = useNavigate()
-  const { iniciarSesion } = useAuth()
+  const { iniciarSesion, cerrarSesion } = useAuth()
+  const [rolSeleccionado, setRolSeleccionado] = useState(ROLES.CLIENTE)
   const [correo, setCorreo] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [errores, setErrores] = useState({})
@@ -46,7 +54,15 @@ function Login() {
     setCargando(true)
     try {
       const respuesta = await api.post('/auth/login', { correo, contrasena })
-      iniciarSesion(respuesta.data.token)
+      const usuarioLogueado = iniciarSesion(respuesta.data.token)
+
+      if (usuarioLogueado.rol !== rolSeleccionado) {
+        cerrarSesion()
+        setErrorGeneral('Esta cuenta no corresponde al rol seleccionado')
+        setCargando(false)
+        return
+      }
+
       navigate('/')
     } catch (error) {
       setErrorGeneral(
@@ -64,6 +80,21 @@ function Login() {
       <div className="flex flex-1 items-center justify-center bg-gray-50 px-6 py-12">
         <form onSubmit={manejarEnvio} className="w-full max-w-sm rounded-xl bg-white p-8 shadow-md">
           <Logo />
+
+          <div className="mb-6 flex rounded-full bg-gray-100 p-1">
+            {TABS_ROL.map((tab) => (
+              <button
+                key={tab.rol}
+                type="button"
+                onClick={() => setRolSeleccionado(tab.rol)}
+                className={`flex-1 rounded-full py-2 text-sm font-semibold ${
+                  rolSeleccionado === tab.rol ? 'bg-morado-500 text-white' : 'text-gray-500'
+                }`}
+              >
+                {tab.etiqueta}
+              </button>
+            ))}
+          </div>
 
           <CampoTexto
             etiqueta="Introduce tu correo:"
