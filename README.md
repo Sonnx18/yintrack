@@ -41,3 +41,4 @@ Cada equipo recibido genera un folio único (un folio corresponde a un solo equi
 - Pruebas de API: Bruno
 
 ## Diagrama Entidad-Relación
+![Diagrama ER](assets/ERyintrack.png)
